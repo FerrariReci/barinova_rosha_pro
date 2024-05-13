@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+        <title>{{ title }}</title>
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/style.css')}}">
+    <link rel="stylesheet/less" type="text/css" href="{{url_for('static', filename='css/style.less')}}">
+    <script src="https://cdn.jsdelivr.net/npm/less" ></script>
+    <script src="/static/css/style.js"></script>
+    </head>
+    <body style="background: white">
+        <nav class="menu">
+          <ol>
+            <li class="menu-item"><a href="/" style="font-weight: bold;">Главная</a></li>
+            <li class="menu-item"><a href="#0" style="font-weight: bold;">События</a></li>
+            <li class="menu-item" style="font-weight: bold;">
+              <a href="#0">Результаты</a>
+            </li>
+            <li class="menu-item" style="font-weight: bold;">
+              <a href="#0">Организаторам</a>
+            </li>
+            {% if current_user.is_authenticated %}
+            <li class="menu-item" style="font-weight: bold;"><a href="/profile">{{ current_user.username }} {{ current_user.surname }}</a></li>
+            {% else %}
+            <li class="menu-item" style="font-weight: bold;"><a href="/login">Профиль</a></li>
+            {% endif %}
+          </ol>
+        </nav>
+        <div >{% block content %}{% endblock %}</div>
+    </body>
+</html>

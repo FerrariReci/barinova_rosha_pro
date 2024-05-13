@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+        <title>{{ title }}</title>
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/style.css')}}">
+    <link rel="stylesheet/less" type="text/css" href="{{url_for('static', filename='css/style.less')}}">
+    <script src="https://cdn.jsdelivr.net/npm/less" ></script>
+    <script src="/static/css/style.js"></script>
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+          crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    </head>
+    <a href="/"><button id="exit" style="background-color: rgba(255, 255, 255, 0); border: none; outline: none;"></button></a>
+        <img id="third" src="/static/img/line.png" style="margin-top: -45px; height: 50 px;">
+    <body style="background: white;">
+    <table id="register" >
+    <td id="rform"><form action="" method="post" >
+        <h1 align="center">Регистрация</h1>
+        {{ form.hidden_tag() }}
+        <p align="center">
+            <b>{{ form.username.label }}</b><br>
+            {{ form.username(class="form-control") }}<br>
+            {% for error in form.username.errors %}
+                <p class="alert alert-danger" role="alert">
+                    {{ error }}
+                </p>
+            {% endfor %}
+        </p>
+        <p align="center">
+            <b>{{ form.surname.label }}</b><br>
+            {{ form.surname(class="form-control") }}<br>
+            {% for error in form.surname.errors %}
+                <p class="alert alert-danger" role="alert">
+                    {{ error }}
+                </p>
+            {% endfor %}
+        </p>
+        <p align="center">
+            <b>{{ form.email.label }}</b><br>
+            {{ form.email(class="form-control", type="email") }}<br>
+            {% for error in form.email.errors %}
+                <p class="alert alert-danger" role="alert">
+                    {{ error }}
+                </p>
+            {% endfor %}
+        </p>
+        <p align="center">
+            <b>{{ form.password.label }}</b><br>
+            {{ form.password(class="form-control", type="password") }}<br>
+            {% for error in form.password.errors %}
+                <p class="alert alert-danger" role="alert">
+                    {{ error }}
+                </p>
+            {% endfor %}
+        </p>
+        <p align="center">
+            <b>{{ form.password_again.label }}</b><br>
+            {{ form.password_again(class="form-control", type="password") }}<br>
+            {% for error in form.password_again.errors %}
+                <p class="alert alert-danger" role="alert">
+                    {{ error }}
+                </p>
+            {% endfor %}
+        </p>
+        <p align="center">{{ form.submit(type="submit", class="btn btn-warning") }}</p>
+        {{message}}
+    </form></td>
+        </tr></table>
+    </body>
+</html>
