@@ -17,6 +17,29 @@ UPLOAD_FOLDER = './static/img/'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 
+def check_password(password):
+    password = str(password)
+    if len(password) < 8:
+        return 'Пароль должен содержать не менее 8 символов'
+    numb = False
+    lett = False
+    up_lett = False
+    for w in password:
+        if w.isdigit():
+            numb = True
+        elif w.isalpha():
+            lett = True
+            if w.upper() == w:
+                up_lett = True
+    if numb is False:
+        return 'В пароле должны присутствовать цифры'
+    if lett is False:
+        return 'В пароле должны присутствовать строчные буквы'
+    if up_lett is False:
+        return 'В пароле должны прописные буквы'
+    return 'True'
+
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
@@ -51,6 +74,12 @@ def register():
             return render_template('register.html', title='Регистрация',
                                    form=form,
                                    message="Пароли не совпадают")
+        password = form.password.data
+        response = check_password(password)
+        if response != 'True':
+            return render_template('register.html', title='Регистрация',
+                                   form=form,
+                                   message=response.capitalize())
         db_sess = db_session.create_session()
         if db_sess.query(User).filter(User.email == form.email.data).first():
             return render_template('register.html', title='Регистрация',
