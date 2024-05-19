@@ -2,6 +2,8 @@ import os
 from flask import Flask, render_template, redirect, request, flash
 from data import db_session
 from data.users import User
+from data.user_competitions import User_competitions
+from data.competition import Competition
 from forms.user import RegisterForm
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from forms.login import LoginForm
@@ -9,8 +11,7 @@ from werkzeug.utils import secure_filename
 
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = '!'
-MAX_CONTENT_LENGTH = 1024 * 1024
+app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
 login_manager = LoginManager()
 login_manager.init_app(app)
 UPLOAD_FOLDER = './static/img/'
@@ -64,6 +65,29 @@ def load_user(user_id):
 @app.route("/")
 def index():
     return render_template("index.html")
+
+
+@app.route("/events")
+def events():
+    db_sess = db_session.create_session()
+    events = db_sess.query(Competition).all()
+    return render_template("events.html", title='События', events=events)
+
+
+@app.route('/events/<int:id>', methods=['GET', 'POST'])
+@login_required
+def new_event(id):
+    db_sess = db_session.create_session()
+    now_id = current_user.id
+    ev = db_sess.query(User_competitions.type).filter(User_competitions.user_id == now_id).all()
+    if (id, ) not in ev:
+        new_comp = User_competitions()
+        new_comp.user_id = now_id
+        new_comp.type = id
+        db_sess.add(new_comp)
+        db_sess.commit()
+    events = db_sess.query(Competition).all()
+    return render_template("events.html", title='События', events=events)
 
 
 @app.route('/register', methods=['GET', 'POST'])

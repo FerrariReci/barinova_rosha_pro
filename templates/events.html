@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h3>События</h3>
+{% for item in events%}
+    <div class="col-md6 border rounded">
+        <table class="table table-striped-columns">
+                <tr><th>Соревнование</th><th>Дата</th>
+                        <tr><td>{{item.name}}</td><td>---</td>
+        </table>
+        <div><h1> </h1></div>
+    </div>
+    {% if current_user.is_authenticated %}
+    <div>
+        <a href="/events/{{ item.id }}"><button style="background-color: rgb(191, 96, 64); color: white; border: none; outline: none;">Записаться</button></a>
+    </div>
+    <p style="text-transform: none; font-weight: bold; color: black;">{{ message }}</p>
+{% endif %}
+    {% endfor %}
+{% endblock %}
