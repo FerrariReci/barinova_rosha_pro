@@ -13,3 +13,4 @@ class User_competitions(SqlAlchemyBase, UserMixin, SerializerMixin):
     user_id = sqlalchemy.Column(sqlalchemy.INT, sqlalchemy.ForeignKey("users.id"))
     type = sqlalchemy.Column(sqlalchemy.INT, sqlalchemy.ForeignKey("competition.id"))
     user = orm.relationship('User')
+    competition = orm.relationship('Competition')

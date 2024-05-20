@@ -2,6 +2,7 @@ from .db_session import SqlAlchemyBase
 import sqlalchemy
 from flask_login import UserMixin
 from sqlalchemy_serializer import SerializerMixin
+from sqlalchemy import orm
 
 
 class Competition(SqlAlchemyBase, UserMixin, SerializerMixin):
@@ -10,3 +11,4 @@ class Competition(SqlAlchemyBase, UserMixin, SerializerMixin):
     id = sqlalchemy.Column(sqlalchemy.Integer,
                            primary_key=True, autoincrement=True)
     name = sqlalchemy.Column(sqlalchemy.TEXT, index=True, unique=True, nullable=True)
+    user_competitions = orm.relationship("User_competitions", back_populates='competition')

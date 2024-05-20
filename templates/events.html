@@ -13,8 +13,11 @@
     {% if current_user.is_authenticated %}
     <div>
         <a href="/events/{{ item.id }}"><button style="background-color: rgb(191, 96, 64); color: white; border: none; outline: none;">Записаться</button></a>
+        {% if current_user.status == 1 %}
+        <a href="/del_events/{{ item.id }}"><button style="background-color: rgb(191, 96, 64); color: white; border: none; outline: none;">Удалить событие</button></a>
+        {% endif %}
     </div>
-    <p style="text-transform: none; font-weight: bold; color: black;">{{ message }}</p>
 {% endif %}
     {% endfor %}
+<p style="text-transform: none; font-weight: bold; color: black;">{{ message }}</p>
 {% endblock %}

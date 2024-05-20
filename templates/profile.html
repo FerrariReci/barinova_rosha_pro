@@ -16,8 +16,15 @@
         <li>Имя: {{ current_user.username }}</li>
         <li>Фамилия: {{ current_user.surname }}</li>
         <li>Email: {{ current_user.email }}</li>
+        <li>Мои соревнования:</li>
+            <ul>
+                {% for item in competitions%}
+                    <li>{{ item.competition.name}}</li>
+                    <a href="/events/del/{{ item.type }}"><button style="background-color: rgb(191, 96, 64); color: white; border: none; outline: none;">Не участвовать</button></a>
+            {% endfor %}
+            </ul>
         </ul>
     </td></tr>
 </table>
-<a href="/logout" style="top: 210px; position: absolute; left: 47%; color: #FF7400"><h1 align="center" style="color: #FF7400">Выйти</h1></a>
+<a href="/logout" style="top: 410px; position: absolute; left: 47%; color: #FF7400"><h1 align="center" style="color: #FF7400">Выйти</h1></a>
 {% endblock %}

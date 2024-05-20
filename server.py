@@ -86,8 +86,38 @@ def new_event(id):
         new_comp.type = id
         db_sess.add(new_comp)
         db_sess.commit()
+        events = db_sess.query(Competition).all()
+        return render_template("events.html", title='События', events=events)
     events = db_sess.query(Competition).all()
-    return render_template("events.html", title='События', events=events)
+    comp = db_sess.query(Competition.name).filter(Competition.id == id).first()
+    return render_template("events.html", title='События', events=events,
+                           message=f'Вы уже записаны на "{comp[0]}"')
+
+
+@app.route('/events/del/<int:id>', methods=['GET', 'POST'])
+@login_required
+def del_event(id):
+    db_sess = db_session.create_session()
+    now_id = current_user.id
+    event = db_sess.query(User_competitions).filter(User_competitions.type == id,
+                                                    User_competitions.user_id == now_id).first()
+    db_sess.delete(event)
+    db_sess.commit()
+    return redirect('/profile')
+
+
+@app.route('/del_events/<int:id>', methods=['GET', 'POST'])
+@login_required
+def delete_event(id):
+    db_sess = db_session.create_session()
+    events = db_sess.query(User_competitions).filter(User_competitions.type == id).all()
+    for e in events:
+        db_sess.delete(e)
+    db_sess.commit()
+    comp = db_sess.query(Competition).filter(Competition.id == id).first()
+    db_sess.delete(comp)
+    db_sess.commit()
+    return redirect('/events')
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -113,6 +143,7 @@ def register():
         user.username = form.username.data
         user.surname = form.surname.data
         user.email = form.email.data
+        user.status = 0
         user.avatar = '/static/img/profile.jpg'
         user.set_password(form.password.data)
         db_sess.add(user)
@@ -152,7 +183,10 @@ def upload():
 
 @app.route("/profile")
 def profile():
-    return render_template("profile.html")
+    db_sess = db_session.create_session()
+    now_id = current_user.id
+    u_s = db_sess.query(User_competitions).filter(User_competitions.user_id == now_id).all()
+    return render_template("profile.html", competitions=u_s)
 
 
 def main():
