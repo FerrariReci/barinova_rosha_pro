@@ -7,6 +7,7 @@ from data.competition import Competition
 from forms.user import RegisterForm
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from forms.login import LoginForm
+from forms.new_event import EventForm
 from werkzeug.utils import secure_filename
 
 
@@ -118,6 +119,21 @@ def delete_event(id):
     db_sess.delete(comp)
     db_sess.commit()
     return redirect('/events')
+
+
+@app.route('/add_event', methods=['GET', 'POST'])
+@login_required
+def add_event():
+    form = EventForm()
+    if form.validate_on_submit():
+        db_sess = db_session.create_session()
+        name = form.name.data
+        comp = Competition()
+        comp.name = name
+        db_sess.add(comp)
+        db_sess.commit()
+        return redirect('/events')
+    return render_template('new_event.html', title='События', form=form)
 
 
 @app.route('/register', methods=['GET', 'POST'])

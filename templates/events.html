@@ -2,11 +2,14 @@
 
 {% block content %}
 <h3>События</h3>
+{% if current_user.status == 1 %}
+        <a href="/add_event"><button style="background-color: rgb(191, 96, 64); color: white; border: none; outline: none;">Добавить новое событие</button></a>
+{% endif %}
 {% for item in events%}
     <div class="col-md6 border rounded">
         <table class="table table-striped-columns">
                 <tr><th>Соревнование</th><th>Дата</th>
-                        <tr><td>{{item.name}}</td><td>---</td>
+                        <tr><td style="text-transform: none;">{{item.name}}</td><td>---</td>
         </table>
         <div><h1> </h1></div>
     </div>
