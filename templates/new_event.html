@@ -18,12 +18,21 @@
     <body style="background: white;">
     <table id="register">
     <td id="rform" ><form action="" method="post">
-        <h1 align="center">Создание событие</h1>
+        <h1 align="center" style="text-transform: none;">Создание события</h1>
         {{ form.hidden_tag() }}
         <p align="center">
             <b>{{ form.name.label }}</b><br>
             {{ form.name(class="form-control") }}<br>
             {% for error in form.name.errors %}
+                <p class="alert alert-danger" role="alert">
+                    {{ error }}
+                </p>
+            {% endfor %}
+           <b>{{ form.date_time.label }}</b><br>
+            {{ form.date_time(class="form-control") }}<br>
+            <b>{{ form.text.label }}</b><br>
+            {{ form.text(class="form-control") }}<br>
+            {% for error in form.text.errors %}
                 <p class="alert alert-danger" role="alert">
                     {{ error }}
                 </p>

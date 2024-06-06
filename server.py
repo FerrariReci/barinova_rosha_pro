@@ -9,6 +9,8 @@ from flask_login import LoginManager, login_user, logout_user, login_required, c
 from forms.login import LoginForm
 from forms.new_event import EventForm
 from werkzeug.utils import secure_filename
+from io import BytesIO
+from flask import send_file
 
 
 app = Flask(__name__)
@@ -71,8 +73,15 @@ def index():
 @app.route("/events")
 def events():
     db_sess = db_session.create_session()
-    events = db_sess.query(Competition).all()
+    events = db_sess.query(Competition).filter(Competition.status == 1).all()
     return render_template("events.html", title='События', events=events)
+
+
+@app.route("/results")
+def results():
+    db_sess = db_session.create_session()
+    events = db_sess.query(Competition).filter(Competition.status == 0).all()
+    return render_template("results.html", title='Результаты', events=events)
 
 
 @app.route('/events/<int:id>', methods=['GET', 'POST'])
@@ -89,7 +98,7 @@ def new_event(id):
         db_sess.commit()
         events = db_sess.query(Competition).all()
         return render_template("events.html", title='События', events=events)
-    events = db_sess.query(Competition).all()
+    events = db_sess.query(Competition).filter(Competition.status == 1).all()
     comp = db_sess.query(Competition.name).filter(Competition.id == id).first()
     return render_template("events.html", title='События', events=events,
                            message=f'Вы уже записаны на "{comp[0]}"')
@@ -121,6 +130,20 @@ def delete_event(id):
     return redirect('/events')
 
 
+@app.route('/last_events/<int:id>', methods=['GET', 'POST'])
+@login_required
+def last_event(id):
+    db_sess = db_session.create_session()
+    events = db_sess.query(User_competitions).filter(User_competitions.type == id).all()
+    for e in events:
+        db_sess.delete(e)
+    db_sess.commit()
+    comp = db_sess.query(Competition).filter(Competition.id == id).first()
+    comp.status = 0
+    db_sess.commit()
+    return redirect('/events')
+
+
 @app.route('/add_event', methods=['GET', 'POST'])
 @login_required
 def add_event():
@@ -130,6 +153,9 @@ def add_event():
         name = form.name.data
         comp = Competition()
         comp.name = name
+        comp.status = 1
+        comp.date = form.date_time.data
+        comp.description = form.text.data
         db_sess.add(comp)
         db_sess.commit()
         return redirect('/events')
@@ -161,6 +187,7 @@ def register():
         user.email = form.email.data
         user.status = 0
         user.avatar = '/static/img/profile.jpg'
+        user.docs = '-'
         user.set_password(form.password.data)
         db_sess.add(user)
         db_sess.commit()
@@ -195,6 +222,35 @@ def upload():
         except Exception:
             return redirect("/profile")
     return redirect("/profile")
+
+
+@app.route('/upload_file', methods=["POST", "GET"])
+@login_required
+def upload_file():
+    if request.method == 'POST':
+        try:
+            folder = './static/users_docs/'
+            file = request.files['file']
+            if file.filename[-3:] in ('jpg', 'JPG', 'PNG', 'png', 'pdf', "PDF"):
+                now_id = current_user.id
+                filename = str(now_id) + '_doc.' + file.filename[-3:]
+                s = os.path.join(folder, filename)
+                file.save(s)
+                db_sess = db_session.create_session()
+                user = db_sess.query(User).filter(User.id == now_id).first()
+                user.docs = folder + filename
+                db_sess.commit()
+            else:
+                return redirect("/profile")
+        except Exception:
+            return redirect("/profile")
+    return redirect("/profile")
+
+
+@app.route('/download')
+def download():
+    filename = current_user.docs
+    return send_file(filename, as_attachment=True)
 
 
 @app.route("/profile")

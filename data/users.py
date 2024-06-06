@@ -17,6 +17,7 @@ class User(SqlAlchemyBase, UserMixin, SerializerMixin):
     email = sqlalchemy.Column(sqlalchemy.String, index=True, unique=True, nullable=True)
     avatar = sqlalchemy.Column(sqlalchemy.String, index=True, unique=True, nullable=True)
     status = sqlalchemy.Column(sqlalchemy.Integer, index=True, nullable=True)
+    docs = sqlalchemy.Column(sqlalchemy.String, index=True, nullable=True)
     hashed_password = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     user_competitions = orm.relationship("User_competitions", back_populates='user')
 

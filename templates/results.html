@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h3 style="text-transform: none;">Прошлые события</h3>
+{% for item in events%}
+    <div class="col-md6 border rounded">
+        <table class="table table-striped-columns">
+                <tr><th>Соревнование</th><th>Дата и время</th><th>Описание</th>
+                        <tr><td style="text-transform: none;">{{item.name}}</td><td>{{item.date}}</td><td>{{item.description}}</td>
+        </table>
+        <div><h1> </h1></div>
+        {% if current_user.status == 1 %}
+        <a href="/del_events/{{ item.id }}"><button style="background-color: rgb(191, 96, 64); color: white; border: none; outline: none;">Удалить событие</button></a>
+            {% endif %}
+    </div>
+{% endfor %}
+{% endblock %}

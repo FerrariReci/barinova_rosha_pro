@@ -23,8 +23,15 @@
                     <a href="/events/del/{{ item.type }}"><button style="background-color: rgb(191, 96, 64); color: white; border: none; outline: none;">Не участвовать</button></a>
             {% endfor %}
             </ul>
-        </ul>
-    </td></tr>
+            <li><b>Медицинская справка</b></li>
+            {% if current_user.docs != '-' %}
+            <a href="/download"><button style="background-color: rgb(191, 96, 64); color: white; border: none; outline: none;">Сохранить</button></a>
+            {% endif %}
+            <div class="file-load">
+                <form action="{{ url_for('upload_file') }}" method="POST" enctype="multipart/form-data">
+                    <p><input type="file" name="file">
+                    <p><input type="submit" name="Загрузить">
+                </form>
 </table>
 <a href="/logout" style="top: 410px; position: absolute; left: 47%; color: #FF7400"><h1 align="center" style="color: #FF7400">Выйти</h1></a>
 {% endblock %}
