@@ -18,6 +18,7 @@
         {% if current_user.status != 1 %}
         <a href="/events/{{ item.id }}"><button style="background-color: rgb(191, 96, 64); color: white; border: none; outline: none;">Записаться</button></a>
         {% elif current_user.status == 1 %}
+        <a href="/save/{{ item.id }}"><button style="background-color: rgb(191, 96, 64); color: white; border: none; outline: none;">Список участников</button></a>
         <a href="/last_events/{{ item.id }}"><button style="background-color: rgb(191, 96, 64); color: white; border: none; outline: none;">Событие прошло</button></a>
         <a href="/del_events/{{ item.id }}"><button style="background-color: rgb(191, 96, 64); color: white; border: none; outline: none;">Удалить событие</button></a>
         {% endif %}

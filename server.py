@@ -96,12 +96,32 @@ def new_event(id):
         new_comp.type = id
         db_sess.add(new_comp)
         db_sess.commit()
-        events = db_sess.query(Competition).all()
+        events = db_sess.query(Competition).filter(Competition.status == 1).all()
         return render_template("events.html", title='События', events=events)
     events = db_sess.query(Competition).filter(Competition.status == 1).all()
     comp = db_sess.query(Competition.name).filter(Competition.id == id).first()
     return render_template("events.html", title='События', events=events,
                            message=f'Вы уже записаны на "{comp[0]}"')
+
+
+@app.route('/save/<int:id>', methods=['GET', 'POST'])
+@login_required
+def save(id):
+    db_sess = db_session.create_session()
+    event = db_sess.query(User_competitions).filter(User_competitions.type == id).all()
+    arr = []
+    for e in event:
+        user = db_sess.query(User).filter(User.id == e.user_id).first()
+        arr.append(user)
+    filename = './static/users_docs/list_of_users.txt'
+    name = db_sess.query(Competition).filter(Competition.id == id).first()
+    name = name.name
+    with open(filename, 'w', encoding='utf-8') as f:
+        s = f'Список участников "{name}"' + '\n'
+        for user in arr:
+            s += user.username + ' ' + user.surname + '\n'
+        f.write(s)
+    return send_file(filename, as_attachment=True)
 
 
 @app.route('/events/del/<int:id>', methods=['GET', 'POST'])
@@ -125,8 +145,11 @@ def delete_event(id):
         db_sess.delete(e)
     db_sess.commit()
     comp = db_sess.query(Competition).filter(Competition.id == id).first()
+    st = comp.status
     db_sess.delete(comp)
     db_sess.commit()
+    if st == 0:
+        return redirect('/results')
     return redirect('/events')
 
 
