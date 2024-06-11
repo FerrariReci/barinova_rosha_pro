@@ -1,29 +1,117 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h3>События</h3>
+<h3 style="margin-top: 30px;">События</h3>
 {% if current_user.status == 1 %}
-        <a href="/add_event"><button style="background-color: rgb(191, 96, 64); color: white; border: none; outline: none;">Добавить новое событие</button></a>
+        <a class="btn_primary" href='/add_event' style="
+            border: none;
+            outline: none;
+            background: linear-gradient(90deg, #ff9966, #ff5e62);
+            padding: 1rem 1.5rem;
+            border-radius: 50px;
+            color: white;
+            text-transform: none;
+            font-size: 1rem;
+            box-shadow: 1px 10px 2rem rgba(255, 94, 98, 0.5);
+            transition: all 0.2s ease-in;
+            text-decoration: none;">Добавить новое событие</a>
 {% endif %}
 {% for item in events%}
-    <div class="col-md6 border rounded">
-        <table class="table table-striped-columns">
-                <tr><th>Соревнование</th><th>Дата и время</th><th>Описание</th>
-                        <tr><td style="text-transform: none;">{{item.name}}</td><td>{{item.date}}</td><td>{{item.description}}</td>
-        </table>
-        <div><h1> </h1></div>
-    </div>
+<div class="blog_post" style="  background: #fff;
+  max-width: 800px;
+  max-height: 500px;
+  margin-left: auto;
+  text-transform: none;
+  margin-right: auto;
+  border-radius: 10px;
+  box-shadow: 1px 1px 2rem rgba(0, 0, 0, 0.3);
+  position: relative;
+  margin-top: 40px;" >
+  <div class="img_pod" style="height: 110px;
+  width: 110px;
+  background: linear-gradient(90deg, #ff9966, #ff5e62);
+  z-index: 10;
+  box-shadow: 1px 1px 2rem rgba(0, 0, 0, 0.3);
+  border-radius: 100%;
+  position: absolute;
+  left: -10%;
+  top: -13%;
+  display: flex;
+  align-items: center;
+  justify-content: center;">
+  </div>
+  <div class="container_copy" style=".container_copy {
+  padding: 6rem 4rem 5rem 10rem;}">
+    <h5 style="  margin: 0 0 0.5rem 0;
+  color: #999;
+  text-transform: none;
+  font-size: 0.8rem;">{{ item.date }}</h5>
+    <h3 style="  margin: 0 0 1rem 0;
+  font-size: 1.5rem;
+  text-transform: none;
+  letter-spacing: 0.5px;
+  color: #333;">{{ item.name }}</h3>
+    <p style="  margin: 0 0 4.5rem 0;
+  font-size: 1rem;
+  line-height: 1.45;
+  text-transform: none;
+  color: #333;">{{ item.description }}</p>
     {% if current_user.is_authenticated %}
     <div>
         {% if current_user.status != 1 %}
-        <a href="/events/{{ item.id }}"><button style="background-color: rgb(191, 96, 64); color: white; border: none; outline: none;">Записаться</button></a>
+            <a class="btn_primary" href='/events/{{ item.id }}' style="
+            border: none;
+            outline: none;
+            background: linear-gradient(90deg, #ff9966, #ff5e62);
+            padding: 1rem 1.5rem;
+            border-radius: 50px;
+            color: white;
+            font-size: 1rem;
+            box-shadow: 1px 10px 2rem rgba(255, 94, 98, 0.5);
+            transition: all 0.2s ease-in;
+            text-decoration: none;">Записаться</a>
         {% elif current_user.status == 1 %}
-        <a href="/save/{{ item.id }}"><button style="background-color: rgb(191, 96, 64); color: white; border: none; outline: none;">Список участников</button></a>
-        <a href="/last_events/{{ item.id }}"><button style="background-color: rgb(191, 96, 64); color: white; border: none; outline: none;">Событие прошло</button></a>
-        <a href="/del_events/{{ item.id }}"><button style="background-color: rgb(191, 96, 64); color: white; border: none; outline: none;">Удалить событие</button></a>
+        <a class="btn_primary" href='/save/{{ item.id }}' style="
+            border: none;
+            outline: none;
+            background: linear-gradient(90deg, #ff9966, #ff5e62);
+            padding: 1rem 1.5rem;
+            border-radius: 50px;
+            color: white;
+            text-transform: none;
+            font-size: 1rem;
+            box-shadow: 1px 10px 2rem rgba(255, 94, 98, 0.5);
+            transition: all 0.2s ease-in;
+            text-decoration: none;">Список участников</a>
+        <a class="btn_primary" href='/last_events/{{ item.id }}' style="
+            border: none;
+            outline: none;
+            background: linear-gradient(90deg, #ff9966, #ff5e62);
+            padding: 1rem 1.5rem;
+            border-radius: 50px;
+            color: white;
+            text-transform: none;
+            font-size: 1rem;
+            box-shadow: 1px 10px 2rem rgba(255, 94, 98, 0.5);
+            transition: all 0.2s ease-in;
+            text-decoration: none;">Событие прошло</a>
+        <a class="btn_primary" href='/del_events/{{ item.id }}' style="
+            border: none;
+            outline: none;
+            background: linear-gradient(90deg, #ff9966, #ff5e62);
+            padding: 1rem 1.5rem;
+            border-radius: 50px;
+            color: white;
+            text-transform: none;
+            font-size: 1rem;
+            box-shadow: 1px 10px 2rem rgba(255, 94, 98, 0.5);
+            transition: all 0.2s ease-in;
+            text-decoration: none;">Удалить событие</a>
         {% endif %}
     </div>
+  </div>
+  </div>
 {% endif %}
-    {% endfor %}
-<p style="text-transform: none; font-weight: bold; color: black;">{{ message }}</p>
+{% endfor %}
+<p style="text-transform: none; font-weight: bold; color: black; margin-top: 40px;">{{ message }}</p>
 {% endblock %}
