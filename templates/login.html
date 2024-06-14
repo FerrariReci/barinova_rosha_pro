@@ -39,7 +39,18 @@
             {% endfor %}
         </p>
         <p><b>{{ form.remember_me() }} {{ form.remember_me.label }}</b></p>
-        <p align="center">{{ form.submit(type="submit", class="btn btn-warning") }}</p>
+        <p align="center"><button style="
+            border: none;
+            outline: none;
+            background: linear-gradient(90deg, #ff9966, #ff5e62);
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            color: white;
+            text-transform: none;
+            font-size: 1rem;
+            box-shadow: 1px 10px 2rem rgba(255, 94, 98, 0.5);
+            transition: all 0.2s ease-in;
+            text-decoration: none;" type="submit">Войти</button></p>
         <div>{{ message }}</div>
         <a href="/register" style="text-transform: none; font-weight: bold; font-style: italic; color: black;">У меня нет аккаунта</a>
     </form></td>

@@ -15,6 +15,7 @@ class User(SqlAlchemyBase, UserMixin, SerializerMixin):
     username = sqlalchemy.Column(sqlalchemy.String, index=True, unique=True, nullable=True)
     surname = sqlalchemy.Column(sqlalchemy.String, index=True, unique=True, nullable=True)
     email = sqlalchemy.Column(sqlalchemy.String, index=True, unique=True, nullable=True)
+    age = sqlalchemy.Column(sqlalchemy.Date, index=True, unique=True, nullable=True)
     avatar = sqlalchemy.Column(sqlalchemy.String, index=True, unique=True, nullable=True)
     status = sqlalchemy.Column(sqlalchemy.Integer, index=True, nullable=True)
     docs = sqlalchemy.Column(sqlalchemy.String, index=True, nullable=True)

@@ -1,0 +1,29 @@
+#first{input[type=file]::file-selector-button {
+  margin-right: 5px;
+  background: linear-gradient(90deg, #ff9966, #ff5e62);
+  padding: 0.35rem 0.6rem;
+  border-radius: 50px;
+  color: white;
+  text-transform: none;
+  font-size: 1rem;
+  box-shadow: 1px 10px 2rem rgba(255, 94, 98, 0.5);
+  transition: all 0.2s ease-in;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background .2s ease-in-out;
+}}
+
+#second {
+input[type=file]::file-selector-button {
+  margin-right: 9px;
+  background: #ff5e62;
+  padding: 0.05rem 0.2rem;
+  color: white;
+  text-transform: none;
+  font-size: 1rem;
+  transition: all 0.2s ease-in;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background .2s ease-in-out;
+}
+}

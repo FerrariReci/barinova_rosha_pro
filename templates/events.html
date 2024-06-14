@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h3 style="margin-top: 30px;">События</h3>
+<h1 style="margin-top: 30px;">События</h1>
 {% if current_user.status == 1 %}
         <a class="btn_primary" href='/add_event' style="
             border: none;
@@ -51,8 +51,8 @@
   text-transform: none;
   letter-spacing: 0.5px;
   color: #333;">{{ item.name }}</h3>
-    <p style="  margin: 0 0 4.5rem 0;
-  font-size: 1rem;
+    <p style="margin: 0 0 4.5rem 0;
+  font-size: 1.2rem;
   line-height: 1.45;
   text-transform: none;
   color: #333;">{{ item.description }}</p>

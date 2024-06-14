@@ -9,7 +9,6 @@ from flask_login import LoginManager, login_user, logout_user, login_required, c
 from forms.login import LoginForm
 from forms.new_event import EventForm
 from werkzeug.utils import secure_filename
-from io import BytesIO
 from flask import send_file
 
 
@@ -73,14 +72,16 @@ def index():
 @app.route("/events")
 def events():
     db_sess = db_session.create_session()
-    events = db_sess.query(Competition).filter(Competition.status == 1).all()
+    events = db_sess.query(Competition).filter(Competition.status == 1).order_by(
+        Competition.date).all()
     return render_template("events.html", title='События', events=events)
 
 
 @app.route("/results")
 def results():
     db_sess = db_session.create_session()
-    events = db_sess.query(Competition).filter(Competition.status == 0).all()
+    events = db_sess.query(Competition).filter(Competition.status == 0).order_by(
+        Competition.date).all()
     return render_template("results.html", title='Результаты', events=events)
 
 
@@ -96,9 +97,11 @@ def new_event(id):
         new_comp.type = id
         db_sess.add(new_comp)
         db_sess.commit()
-        events = db_sess.query(Competition).filter(Competition.status == 1).all()
+        events = db_sess.query(Competition).filter(Competition.status == 1).order_by(
+            Competition.date).all()
         return render_template("events.html", title='События', events=events)
-    events = db_sess.query(Competition).filter(Competition.status == 1).all()
+    events = db_sess.query(Competition).filter(Competition.status == 1).order_by(
+        Competition.date).all()
     comp = db_sess.query(Competition.name).filter(Competition.id == id).first()
     return render_template("events.html", title='События', events=events,
                            message=f'Вы уже записаны на "{comp[0]}"')
@@ -207,6 +210,7 @@ def register():
         user = User()
         user.username = form.username.data
         user.surname = form.surname.data
+        user.age = form.age.data
         user.email = form.email.data
         user.status = 0
         user.avatar = '/static/img/profile.jpg'
@@ -272,7 +276,9 @@ def upload_file():
 
 @app.route('/download')
 def download():
+    print('!')
     filename = current_user.docs
+    print(filename)
     return send_file(filename, as_attachment=True)
 
 
@@ -281,7 +287,7 @@ def profile():
     db_sess = db_session.create_session()
     now_id = current_user.id
     u_s = db_sess.query(User_competitions).filter(User_competitions.user_id == now_id).all()
-    return render_template("profile.html", competitions=u_s)
+    return render_template("p1.html", competitions=u_s)
 
 
 def main():

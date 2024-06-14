@@ -39,6 +39,15 @@
             {% endfor %}
         </p>
         <p align="center">
+            <b>{{ form.age.label }}</b><br>
+            {{ form.surname(class="form-control") }}<br>
+            {% for error in form.age.errors %}
+                <p class="alert alert-danger" role="alert">
+                    {{ error }}
+                </p>
+            {% endfor %}
+        </p>
+        <p align="center">
             <b>{{ form.email.label }}</b><br>
             {{ form.email(class="form-control", type="email") }}<br>
             {% for error in form.email.errors %}
@@ -65,7 +74,18 @@
                 </p>
             {% endfor %}
         </p>
-        <p align="center">{{ form.submit(type="submit", class="btn btn-warning") }}</p>
+        <p align="center"><button style="
+            border: none;
+            outline: none;
+            background: linear-gradient(90deg, #ff9966, #ff5e62);
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            color: white;
+            text-transform: none;
+            font-size: 1rem;
+            box-shadow: 1px 10px 2rem rgba(255, 94, 98, 0.5);
+            transition: all 0.2s ease-in;
+            text-decoration: none;" type="submit">Зарегистрироваться</button></p>
         <p style="text-transform: none; font-weight: bold; color: black;">{{ message }}</p>
     </form></td>
         </tr></table>
