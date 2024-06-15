@@ -30,6 +30,8 @@
             {% endfor %}
            <b>{{ form.date_time.label }}</b><br>
             {{ form.date_time(class="form-control") }}<br>
+           <b>{{ form.place.label }}</b><br>
+            {{ form.place(class="form-control") }}<br>
             <b>{{ form.text.label }}</b><br>
             {{ form.text(class="form-control") }}<br>
             {% for error in form.text.errors %}
@@ -38,7 +40,18 @@
                 </p>
             {% endfor %}
         </p>
-        <p align="center">{{ form.submit(type="submit", class="btn btn-warning") }}</p>
+                <p align="center"><button style="
+            border: none;
+            outline: none;
+            background: linear-gradient(90deg, #ff9966, #ff5e62);
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            color: white;
+            text-transform: none;
+            font-size: 1rem;
+            box-shadow: 1px 10px 2rem rgba(255, 94, 98, 0.5);
+            transition: all 0.2s ease-in;
+            text-decoration: none;" type="submit">Создать</button></p>
     </form></td>
     </table>
     </body>

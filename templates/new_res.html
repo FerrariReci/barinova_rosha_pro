@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+        <title>{{ title }}</title>
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/style.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/style3.css')}}">
+    <link rel="stylesheet/less" type="text/css" href="{{url_for('static', filename='css/style.less')}}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/less" ></script>
+    <script src="/static/css/style.js"></script>
+    </head>
+    <body style="background: white">
+        <nav class="menu">
+          <ol>
+            <li class="menu-item"><a href="/" style="font-weight: bold;">Главная</a></li>
+            <li class="menu-item"><a href="/events" style="font-weight: bold;">События</a></li>
+            <li class="menu-item" style="font-weight: bold;">
+              <a href="/results">Результаты</a>
+            </li>
+            <li class="menu-item" style="font-weight: bold;">
+              <a href="https://t.me/Barinova_Rosha_Bot" style="text-transform: none;">Tg бот</a>
+            </li>
+            {% if current_user.is_authenticated %}
+            <li class="menu-item" style="font-weight: bold;"><a href="/profile">{{ current_user.username }} {{ current_user.surname }}</a></li>
+            {% else %}
+            <li class="menu-item" style="font-weight: bold;"><a href="/login">Профиль</a></li>
+            {% endif %}
+          </ol>
+        </nav>
+        <div >
+
+<h2 style="text-transform: none;">Прошлые события</h2>
+{% for item in events%}
+<div id="container">
+
+	<div class="product-details">
+
+	<h1>{{ item.name }}</h1>
+	<p class="information" style="text-transform: none;">{{ item.description }}</p>
+
+<div class="control">
+    {% if item.res != '-' %}
+    <a class="btn_primary" href="/download_res/{{ item.id }}" style="
+                        border: none;
+                        outline: none;
+                        background: linear-gradient(90deg, #ff9966, #ff5e62);
+                        padding: 0.4rem 1.5rem;
+                        color: white;
+                        text-transform: none;
+                        font-size: 1rem;
+                        box-shadow: 1px 10px 2rem rgba(255, 94, 98, 0.5);
+                        transition: all 0.2s ease-in;
+                        text-decoration: none;">Результаты</a>
+    {% endif %}
+    {% if current_user.status == 1 %}
+    <a class="btn_primary" href="/del_events/{{ item.id }}" style="
+                        border: none;
+                        outline: none;
+                        background: linear-gradient(90deg, #ff9966, #ff5e62);
+                        padding: 0.4rem 1.5rem;
+                        color: white;
+                        text-transform: none;
+                        font-size: 1rem;
+                        box-shadow: 1px 10px 2rem rgba(255, 94, 98, 0.5);
+                        transition: all 0.2s ease-in;
+                        text-decoration: none;">Удалить</a>
+    {% endif %}
+</div>
+</div>
+
+<div class="product-image">
+	<img src="{{ item.photo }}" alt="">
+
+
+<div class="info">
+	<h2>Описание</h2>
+	<ul>
+		<li><strong>Дата: </strong>{{item.date}}</li>
+		<li><strong>Место: </strong>{{ item.place }}</li>
+
+	</ul>
+</div>
+</div>
+
+</div>
+{% endfor %}
+</div>
+    </body>
+</html>

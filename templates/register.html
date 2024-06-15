@@ -40,8 +40,20 @@
         </p>
         <p align="center">
             <b>{{ form.age.label }}</b><br>
-            {{ form.surname(class="form-control") }}<br>
+            {{ form.age(class="form-control") }}<br>
             {% for error in form.age.errors %}
+                <p class="alert alert-danger" role="alert">
+                    {{ error }}
+                </p>
+            {% endfor %}
+        </p>
+        <p align="center" >
+            <b style=" ::selection{
+    color: 255, 128, 0;
+    background-color: #FFAA73;
+}">{{ form.gender.label }}</b><br>
+            {{ form.gender(class="form-control") }}<br>
+            {% for error in form.gender.errors %}
                 <p class="alert alert-danger" role="alert">
                     {{ error }}
                 </p>

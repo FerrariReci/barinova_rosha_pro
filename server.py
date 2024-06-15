@@ -66,7 +66,7 @@ def load_user(user_id):
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    return render_template("index.html", title='Главная')
 
 
 @app.route("/events")
@@ -82,7 +82,7 @@ def results():
     db_sess = db_session.create_session()
     events = db_sess.query(Competition).filter(Competition.status == 0).order_by(
         Competition.date).all()
-    return render_template("results.html", title='Результаты', events=events)
+    return render_template("new_res.html", title='Результаты', events=events)
 
 
 @app.route('/events/<int:id>', methods=['GET', 'POST'])
@@ -181,6 +181,8 @@ def add_event():
         comp.name = name
         comp.status = 1
         comp.date = form.date_time.data
+        comp.place = form.place.data
+        comp.photo = '-'
         comp.description = form.text.data
         db_sess.add(comp)
         db_sess.commit()
@@ -276,9 +278,15 @@ def upload_file():
 
 @app.route('/download')
 def download():
-    print('!')
     filename = current_user.docs
-    print(filename)
+    return send_file(filename, as_attachment=True)
+
+
+@app.route('/download_res/<int:id>')
+def download_res(id):
+    db_sess = db_session.create_session()
+    comp = db_sess.query(Competition).filter(Competition.id == id).first()
+    filename = comp.res
     return send_file(filename, as_attachment=True)
 
 
@@ -287,7 +295,7 @@ def profile():
     db_sess = db_session.create_session()
     now_id = current_user.id
     u_s = db_sess.query(User_competitions).filter(User_competitions.user_id == now_id).all()
-    return render_template("p1.html", competitions=u_s)
+    return render_template("profile.html", competitions=u_s, title='Мой профиль')
 
 
 def main():
