@@ -12,11 +12,12 @@ class User(SqlAlchemyBase, UserMixin, SerializerMixin):
 
     id = sqlalchemy.Column(sqlalchemy.Integer,
                            primary_key=True, autoincrement=True)
-    username = sqlalchemy.Column(sqlalchemy.String, index=True, unique=True, nullable=True)
-    surname = sqlalchemy.Column(sqlalchemy.String, index=True, unique=True, nullable=True)
+    username = sqlalchemy.Column(sqlalchemy.String, index=True, nullable=True)
+    surname = sqlalchemy.Column(sqlalchemy.String, index=True, nullable=True)
     email = sqlalchemy.Column(sqlalchemy.String, index=True, unique=True, nullable=True)
-    age = sqlalchemy.Column(sqlalchemy.Date, index=True, unique=True, nullable=True)
-    avatar = sqlalchemy.Column(sqlalchemy.String, index=True, unique=True, nullable=True)
+    age = sqlalchemy.Column(sqlalchemy.Date, index=True, nullable=True)
+    gender = sqlalchemy.Column(sqlalchemy.Integer, index=True, nullable=True)
+    avatar = sqlalchemy.Column(sqlalchemy.String, index=True, nullable=True)
     status = sqlalchemy.Column(sqlalchemy.Integer, index=True, nullable=True)
     docs = sqlalchemy.Column(sqlalchemy.String, index=True, nullable=True)
     hashed_password = sqlalchemy.Column(sqlalchemy.String, nullable=True)

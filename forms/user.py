@@ -11,7 +11,7 @@ class RegisterForm(FlaskForm):
     password_again = PasswordField('Повторите пароль', validators=[DataRequired()])
     username = StringField('Имя', validators=[DataRequired()])
     surname = StringField('Фамилия', validators=[DataRequired()])
-    age = DateField('Дата рождения', default=datetime.today(), format='%d-%m-%Y')
+    age = DateField('Дата рождения', default=datetime.today(), format='%Y-%m-%d')
     gender = SelectField("Пол", validators=[validators.InputRequired()], choices=[(0, "Мужской"),
                                                                                   (1, "Женский"),])
     submit = SubmitField('Зарегистрироваться')

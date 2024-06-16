@@ -1,4 +1,5 @@
 import os
+from _datetime import datetime
 from flask import Flask, render_template, redirect, request, flash
 from data import db_session
 from data.users import User
@@ -18,6 +19,11 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 UPLOAD_FOLDER = './static/img/'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+
+def age(birthdate_str, date_format='%Y-%m-%d'):
+    birthdate = datetime.strptime(str(birthdate_str), date_format)
+    return (datetime.now() - birthdate).days // 365
 
 
 def check_password(password):
@@ -120,9 +126,14 @@ def save(id):
     name = db_sess.query(Competition).filter(Competition.id == id).first()
     name = name.name
     with open(filename, 'w', encoding='utf-8') as f:
-        s = f'Список участников "{name}"' + '\n'
+        s = f'Список участников "{name}"' + '\n' + 'Имя, фамилия - пол, возраст' + '\n'
         for user in arr:
-            s += user.username + ' ' + user.surname + '\n'
+            if user.gender == 1:
+                g = 'ж'
+            else:
+                g = 'м'
+            user_age = age(user.age)
+            s += user.username + ' ' + user.surname + ' - ' + g + ', ' + str(user_age) + '\n'
         f.write(s)
     return send_file(filename, as_attachment=True)
 
@@ -214,6 +225,7 @@ def register():
         user.surname = form.surname.data
         user.age = form.age.data
         user.email = form.email.data
+        user.gender = form.gender.data
         user.status = 0
         user.avatar = '/static/img/profile.jpg'
         user.docs = '-'

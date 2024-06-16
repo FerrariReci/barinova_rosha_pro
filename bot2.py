@@ -11,7 +11,7 @@ async def start(update, context):
     context.user_data['game'] = cur.execute("""SELECT * FROM game""").fetchall()
     context.user_data['questions'] = []
     context.user_data['result'] = 0
-    await update.message.reply_text('👋《-❲Приветствую, мою друг!❳ -》👋 \n'
+    await update.message.reply_text('👋《-❲Приветствую, мой друг!❳ -》👋 \n'
                                     'Я бот Бариновой Рощи могу:\n'
                                     '• Сыграть с тобой в игру и узнать,'
                                     ' на сколько хорошо ты знаешь трассу Бариновой Рощи\n'
@@ -29,7 +29,7 @@ async def start(update, context):
 
 
 async def empty_function(update, context):
-    await update.message.reply_text('Я не понимаю...')
+    await update.message.reply_text('Извините, я Вас не понимаю...')
 
 
 async def game(update, context):
@@ -45,15 +45,15 @@ async def game(update, context):
                                               'Ген анализа работает!', 'Мастер головоломок!',
                                               'Легенда дедукции!']
         context.user_data['wrong_answers'] = ['Нам жаль, но это неправильный ответ!',
-                                              'К сожалению это неправильный ответ!',
+                                              'К сожалению, это неправильный ответ!',
                                               'Эхх... мимо, это неправильный ответ!',
                                               'Нет, это неправильный ответ!',
                                               'Так близко, но так далеко, это неправильный ответ!',
                                               'Почти так, но есть вариант лучше!',
                                               'Промах, это неправильный ответ!',
-                                              'Это неправильный ответ!',
-                                              'Никого тильта, только полный тильт!', 'Почти было!',
-                                              'Следовало подумать ещё, это нерпавильный ответ!']
+                                              'Это неправильный ответ!', 'Почти было!',
+                                              'Следовало подумать ещё, это неправильный ответ!',
+                                              'Неверный ответ!']
         await update.message.reply_text(f'ПРАВИЛА ИГРЫ ❗️\n'
                                         f'Бот отправляет вам фотографию, на которой изображена'
                                         f' часть трассы или момент из соревнований Бариновы Рощи, '
@@ -86,7 +86,7 @@ async def game(update, context):
         context.user_data['questions'] = []
         context.user_data['result'] = 0
         return 0
-    await update.message.reply_text(f'Я вас не понимаю(')
+    await update.message.reply_text(f'Извините, я Вас не понимаю...')
 
 
 async def answer(update, context):
@@ -237,7 +237,7 @@ async def talking_function(update, context):
         await update.message.reply_text(ques, reply_markup=markup)
         return 5
     else:
-        await update.message.reply_text('Я не понимаю...')
+        await update.message.reply_text('Извините, я Вас не понимаю...')
 
 
 async def training(update, context):
@@ -259,7 +259,7 @@ async def training(update, context):
         x = float(req)
         if context.user_data['now_question'] in ('average_heart_rate', 'maximum_heart_rate') and \
                 x > float(info[0].split('-')[-1]):
-            await update.message.reply_text(f'Вау, ваш пульс слишком высокий, как Бурдж-Халифа,'
+            await update.message.reply_text(f'Вау, ваш пульс слишком высокий, '
                                             f' может он был ниже?',
                                             reply_markup=markup)
             return 5
@@ -270,7 +270,7 @@ async def training(update, context):
             context.user_data['points'] += 3
         if context.user_data['now_question'] == 'speed' and \
                 x > float(info[0].split('-')[-1]):
-            await update.message.reply_text(f'Бари, это ты? Может ваша скорость была ниже?',
+            await update.message.reply_text(f'Может ваша скорость была ниже?',
                                             reply_markup=markup)
             return 5
         if context.user_data['now_question'] in ('average_heart_rate', 'maximum_heart_rate') and \
