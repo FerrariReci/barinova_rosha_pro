@@ -3,14 +3,17 @@ from _datetime import datetime
 from flask import Flask, render_template, redirect, request, flash
 from data import db_session
 from data.users import User
+from data.index import Index
 from data.user_competitions import User_competitions
 from data.competition import Competition
 from forms.user import RegisterForm
+from forms.new_info import InfoForm
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from forms.login import LoginForm
 from forms.new_event import EventForm
 from werkzeug.utils import secure_filename
 from flask import send_file
+from werkzeug.utils import secure_filename
 
 
 app = Flask(__name__)
@@ -308,6 +311,31 @@ def profile():
     now_id = current_user.id
     u_s = db_sess.query(User_competitions).filter(User_competitions.user_id == now_id).all()
     return render_template("profile.html", competitions=u_s, title='Мой профиль')
+
+
+@app.route("/new_info", methods=['GET', 'POST'])
+def new_info():
+    form = InfoForm()
+    db_sess = db_session.create_session()
+    new_info = db_sess.query(Index).first()
+    if request.method == 'POST':
+        try:
+            new_info.name = form.name.data
+            new_info.date = form.date.data
+            name = form.photo.data
+            folder = './static/users_docs/'
+            file = secure_filename(form.photo.data.filename)
+            form.photo.data.save('uploads/' + file)
+            file = form.photo.data
+            if name[-3::] in ('jpg', 'JPG', 'PNG', 'png', 'pdf', "PDF"):
+                filename = name
+                s = os.path.join(folder, filename)
+                file.save(s)
+                new_info.photo = folder + filename
+                db_sess.commit()
+        except Exception:
+            return redirect("/new_info")
+    return render_template("new_info.html", form=form, title='Обновление информации')
 
 
 def main():

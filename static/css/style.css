@@ -372,6 +372,18 @@ display: block;
 }
 #rform{
     width: 600px;
+    input[type=file]::file-selector-button {
+  margin-right: 9px;
+  background: #ff5e62;
+  padding: 0.05rem 0.2rem;
+  color: white;
+  text-transform: none;
+  font-size: 1rem;
+  transition: all 0.2s ease-in;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background .2s ease-in-out;
+}
 }
 #animation
   {
