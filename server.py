@@ -1,6 +1,6 @@
 import os
 from _datetime import datetime
-from flask import Flask, render_template, redirect, request, flash
+from flask import url_for, Flask, render_template, redirect, request, flash
 from data import db_session
 from data.users import User
 from data.index import Index
@@ -75,7 +75,9 @@ def load_user(user_id):
 
 @app.route("/")
 def index():
-    return render_template("index.html", title='Главная')
+    db_sess = db_session.create_session()
+    new_info = db_sess.query(Index).first()
+    return render_template("index.html", title='Главная', info=new_info)
 
 
 @app.route("/events")
@@ -318,21 +320,25 @@ def new_info():
     form = InfoForm()
     db_sess = db_session.create_session()
     new_info = db_sess.query(Index).first()
-    if request.method == 'POST':
+    folder = './static/img/'
+    if form.validate_on_submit():
         try:
+            file = request.files['file']
+            if file.filename == '':
+                return render_template("new_info.html", form=form,
+                                       title='Обновление информации',
+                                       message='Файл не может быть пустым')
+            if file.filename[-3:] not in ('jpg', 'JPG', 'PNG', 'png', 'pdf', "PDF"):
+                return render_template("new_info.html", form=form,
+                                       title='Обновление информации',
+                                       message='Файл должен являться фотографией')
             new_info.name = form.name.data
             new_info.date = form.date.data
-            name = form.photo.data
-            folder = './static/users_docs/'
-            file = secure_filename(form.photo.data.filename)
-            form.photo.data.save('uploads/' + file)
-            file = form.photo.data
-            if name[-3::] in ('jpg', 'JPG', 'PNG', 'png', 'pdf', "PDF"):
-                filename = name
-                s = os.path.join(folder, filename)
-                file.save(s)
-                new_info.photo = folder + filename
-                db_sess.commit()
+            new_info.photo = folder + file.filename
+            s = os.path.join(folder, file.filename)
+            file.save(s)
+            db_sess.commit()
+            return redirect("/")
         except Exception:
             return redirect("/new_info")
     return render_template("new_info.html", form=form, title='Обновление информации')

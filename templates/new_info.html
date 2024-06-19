@@ -18,7 +18,7 @@
         <img id="first" src="/static/img/line.png" style="margin-top: -45px; height: 70 px;">
     <body style="background: white;">
     <table id="register">
-    <td id="rform" ><form action="" method="post">
+    <td id="rform" ><form action="{{ url_for('new_info') }}" method="POST" enctype="multipart/form-data" id="second">
         <h1 align="center" style="text-transform: none;">Обновление информации</h1>
         {{ form.hidden_tag() }}
         <p align="center">
@@ -38,23 +38,22 @@
                 </p>
             {% endfor %}
         </p>
-           <b>{{ form.photo.label }}</b><br>
-            {{ form.photo() }} <br>
-        </p>
-        <p align="center"><button style="
-            border: none;
-            outline: none;
-            background: linear-gradient(90deg, #ff9966, #ff5e62);
-            padding: 0.5rem 1.5rem;
-            border-radius: 50px;
+
+            <p><input type="file" name="file"></p>
+            <button style="
+            margin-right: 9px;
+            background: #ff5e62;
+            padding: 0.1rem 0.2rem;
             color: white;
             text-transform: none;
             font-size: 1rem;
-            box-shadow: 1px 10px 2rem rgba(255, 94, 98, 0.5);
             transition: all 0.2s ease-in;
-            text-decoration: none;" type="submit">Обновить</button></p>
-        <p style="text-transform: none; font-weight: bold; color: black;">{{ message }}</p>
-    </form></td>
+            text-decoration: none;
+            cursor: pointer;
+            transition: background .2s ease-in-out;" type="submit">Загрузить</button>
+                    <p style="text-transform: none; font-weight: bold; color: black;">{{ message }}</p>
+    </form>
+</td>
     </table>
     </body>
 </html>
