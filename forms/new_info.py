@@ -8,4 +8,4 @@ from _datetime import datetime
 
 class InfoForm(FlaskForm):
     name = StringField('Название события', validators=[DataRequired()])
-    date = DateField('Дата рождения', default=datetime.today(), format='%Y-%m-%d')
+    date = DateField('Дата', default=datetime.today(), format='%Y-%m-%d')
