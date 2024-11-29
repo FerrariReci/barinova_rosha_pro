@@ -12,5 +12,7 @@ class User_competitions(SqlAlchemyBase, UserMixin, SerializerMixin):
                            primary_key=True, autoincrement=True)
     user_id = sqlalchemy.Column(sqlalchemy.INT, sqlalchemy.ForeignKey("users.id"))
     type = sqlalchemy.Column(sqlalchemy.INT, sqlalchemy.ForeignKey("competition.id"))
+    category = sqlalchemy.Column(sqlalchemy.INT, sqlalchemy.ForeignKey("category.id"))
+    distance = sqlalchemy.Column(sqlalchemy.VARCHAR, index=True, nullable=True)
     user = orm.relationship('User')
     competition = orm.relationship('Competition')

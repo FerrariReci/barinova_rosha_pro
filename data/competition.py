@@ -17,4 +17,6 @@ class Competition(SqlAlchemyBase, UserMixin, SerializerMixin):
     photo = sqlalchemy.Column(sqlalchemy.String, index=True, nullable=True)
     place = sqlalchemy.Column(sqlalchemy.String, index=True, nullable=True)
     res = sqlalchemy.Column(sqlalchemy.String, index=True, nullable=True)
+    categories = sqlalchemy.Column(sqlalchemy.VARCHAR, index=True, nullable=True)
+    distances = sqlalchemy.Column(sqlalchemy.VARCHAR, index=True, nullable=True)
     user_competitions = orm.relationship("User_competitions", back_populates='competition')

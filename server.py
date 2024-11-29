@@ -4,6 +4,7 @@ from flask import url_for, Flask, render_template, redirect, request, flash
 from data import db_session
 from data.users import User
 from data.index import Index
+from data.category import Category
 from data.user_competitions import User_competitions
 from data.competition import Competition
 from forms.user import RegisterForm
@@ -27,6 +28,23 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 def age(birthdate_str, date_format='%Y-%m-%d'):
     birthdate = datetime.strptime(str(birthdate_str), date_format)
     return (datetime.now() - birthdate).days // 365
+
+
+def all_categories(line, g):
+    arr = [int(x.strip()) for x in line.split(',')]
+    db_sess = db_session.create_session()
+    list_categories = []
+    for a in arr:
+        cat = db_sess.query(Category).filter(Category.id == a).first()
+        gender = cat.gender
+        if str(g) in str(gender):
+            list_categories.append(cat)
+    return list_categories
+
+
+def all_distances(line):
+    list_dist = [float(x.strip()) for x in line.split(',')]
+    return list_dist
 
 
 def check_password(password):
@@ -102,10 +120,27 @@ def new_event(id):
     db_sess = db_session.create_session()
     now_id = current_user.id
     ev = db_sess.query(User_competitions.type).filter(User_competitions.user_id == now_id).all()
+    comp = db_sess.query(Competition).filter(Competition.id == id).first()
+    g = current_user.gender
+    cat = comp.categories
+    dist = comp.distances
+    categories = all_categories(cat, g)
+    distances = all_distances(dist)
+    category = request.form.get('category')
+    distance = request.form.get('distance')
+    if str(category) == 'None' or str(distance) == 'None':
+        if str(category) == 'None':
+            mess = "Выберите категорию"
+        else:
+            mess = "Выберите дистанцию"
+        return render_template("reg_for_comp.html", title='Запись на соревнование', comp=comp,
+                               categories=categories, distances=distances, message=mess)
     if (id, ) not in ev:
         new_comp = User_competitions()
         new_comp.user_id = now_id
         new_comp.type = id
+        new_comp.category = category
+        new_comp.distance = distance
         db_sess.add(new_comp)
         db_sess.commit()
         events = db_sess.query(Competition).filter(Competition.status == 1).order_by(
@@ -126,19 +161,24 @@ def save(id):
     arr = []
     for e in event:
         user = db_sess.query(User).filter(User.id == e.user_id).first()
-        arr.append(user)
+        cat = db_sess.query(Category).filter(Category.id == e.category).first()
+        dist = e.distance
+        arr.append((user, cat.name, dist))
     filename = './static/users_docs/list_of_users.txt'
     name = db_sess.query(Competition).filter(Competition.id == id).first()
     name = name.name
     with open(filename, 'w', encoding='utf-8') as f:
-        s = f'Список участников "{name}"' + '\n' + 'Имя, фамилия - пол, возраст' + '\n'
+        s = f'Список участников "{name}"' + '\n' + 'Имя, фамилия - пол, возраст, категория,' \
+                                                   ' дистанция' + '\n'
         for user in arr:
-            if user.gender == 1:
+            if user[0].gender == 1:
                 g = 'ж'
             else:
                 g = 'м'
-            user_age = age(user.age)
-            s += user.username + ' ' + user.surname + ' - ' + g + ', ' + str(user_age) + '\n'
+            user_age = age(user[0].age)
+
+            s += user[0].username + ' ' + user[0].surname + ' - ' + g + ', ' + str(user_age) \
+                 + ', ' + str(user[1]) + ', ' + str(user[2]) + 'км' + '\n'
         f.write(s)
     return send_file(filename, as_attachment=True)
 
@@ -153,6 +193,20 @@ def del_event(id):
     db_sess.delete(event)
     db_sess.commit()
     return redirect('/profile')
+
+
+@app.route('/reg_for_comp/<int:id>', methods=['GET', 'POST'])
+@login_required
+def show(id):
+    db_sess = db_session.create_session()
+    comp = db_sess.query(Competition).filter(Competition.id == id).first()
+    g = current_user.gender
+    cat = comp.categories
+    dist = comp.distances
+    categories = all_categories(cat, g)
+    distances = all_distances(dist)
+    return render_template("reg_for_comp.html", title='Запись на соревнование', comp=comp,
+                           categories=categories, distances=distances)
 
 
 @app.route('/del_events/<int:id>', methods=['GET', 'POST'])
