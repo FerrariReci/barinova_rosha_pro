@@ -109,9 +109,22 @@
             text-decoration: none;">Удалить событие</a>
         {% endif %}
     </div>
+
+    {% else %}
+    <div><a class="btn_primary" href='#' title="Войдите в профиль" style="
+            border: none;
+            outline: none;
+            background: linear-gradient(90deg, #ff9966, #ff5e62);
+            padding: 1rem 1.5rem;
+            border-radius: 50px;
+            color: white;
+            font-size: 1rem;
+            box-shadow: 1px 10px 2rem rgba(255, 94, 98, 0.5);
+            transition: all 0.2s ease-in;
+            text-decoration: none;">Записаться</a></div>
+      {% endif %}
   </div>
   </div>
-{% endif %}
 {% endfor %}
 <p style="text-transform: none; font-weight: bold; color: black; margin-top: 40px;">{{ message }}</p>
 {% endblock %}

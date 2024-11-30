@@ -11,4 +11,6 @@ class EventForm(FlaskForm):
                                    validators=[Required()])
     place = StringField('Место проведения', validators=[DataRequired()])
     text = TextField('Описание события', validators=[DataRequired()])
+    category = TextField('Доступные категории(id)', validators=[DataRequired()])
+    distance = TextField('Дистанции', validators=[DataRequired()])
     submit = SubmitField('Создать')

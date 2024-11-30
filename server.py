@@ -35,15 +35,24 @@ def all_categories(line, g):
     db_sess = db_session.create_session()
     list_categories = []
     for a in arr:
-        cat = db_sess.query(Category).filter(Category.id == a).first()
-        gender = cat.gender
-        if str(g) in str(gender):
-            list_categories.append(cat)
+        try:
+            cat = db_sess.query(Category).filter(Category.id == a).first()
+            gender = cat.gender
+            if str(g) in str(gender):
+                list_categories.append(cat)
+        except Exception:
+            pass
     return list_categories
 
 
 def all_distances(line):
-    list_dist = [float(x.strip()) for x in line.split(',')]
+    list_dist = []
+    for x in line.split(';'):
+        try:
+            x = float(x)
+            list_dist.append(x)
+        except Exception:
+            pass
     return list_dist
 
 
@@ -253,7 +262,10 @@ def add_event():
         comp.date = form.date_time.data
         comp.place = form.place.data
         comp.photo = '-'
+        comp.res = '-'
         comp.description = form.text.data
+        comp.distances = form.distance.data
+        comp.categories = form.category.data
         db_sess.add(comp)
         db_sess.commit()
         return redirect('/events')
@@ -348,12 +360,14 @@ def upload_file():
 
 
 @app.route('/download')
+@login_required
 def download():
     filename = current_user.docs
     return send_file(filename, as_attachment=True)
 
 
 @app.route('/download_res/<int:id>')
+@login_required
 def download_res(id):
     db_sess = db_session.create_session()
     comp = db_sess.query(Competition).filter(Competition.id == id).first()
@@ -362,6 +376,7 @@ def download_res(id):
 
 
 @app.route("/profile")
+@login_required
 def profile():
     db_sess = db_session.create_session()
     now_id = current_user.id
@@ -370,6 +385,7 @@ def profile():
 
 
 @app.route("/new_info", methods=['GET', 'POST'])
+@login_required
 def new_info():
     form = InfoForm()
     db_sess = db_session.create_session()

@@ -17,7 +17,7 @@
         <img id="first" src="/static/img/line.png" style="margin-top: -45px; height: 70 px;">
     <body style="background: white;">
     <table id="register">
-    <td id="rform" ><form action="" method="post">
+    <td id="rform" ><form action="" method="post" style="text-transform: none;">
         <h1 align="center" style="text-transform: none;">Создание события</h1>
         {{ form.hidden_tag() }}
         <p align="center">
@@ -30,6 +30,10 @@
             {% endfor %}
            <b>{{ form.date_time.label }}</b><br>
             {{ form.date_time(class="form-control") }}<br>
+           <b>{{ form.category.label }}</b><br>
+            {{ form.category(class="form-control") }}<br>
+           <b>{{ form.distance.label }}</b><br>
+            {{ form.distance(class="form-control") }}<br>
            <b>{{ form.place.label }}</b><br>
             {{ form.place(class="form-control") }}<br>
             <b>{{ form.text.label }}</b><br>
