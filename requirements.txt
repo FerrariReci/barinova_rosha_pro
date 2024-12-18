@@ -1,7 +1,7 @@
-Flask==3.0.1
-python-telegram-bot==21.0.1
-Flask-Login==0.6.3
-SQLAlchemy==2.0.29
-SQLAlchemy-serializer==1.4.1
-Flask-WTF==1.2.1
-WTForms==2.3.3
+Flask
+python-telegram-bot
+Flask-Login
+SQLAlchemy
+SQLAlchemy-serializer
+Flask-WTF
+WTForms
